@@ -4,6 +4,7 @@ import { FiExternalLink, FiClock, FiDollarSign, FiLock } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useVisitorTracking from '../../hooks/useVisitorTracking';
 
 const formatDuration = ({ years, months }) => {
   const y = years ? `${years} year${years > 1 ? 's' : ''}` : '';
@@ -16,6 +17,7 @@ const CourseCard = ({ course, onSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useSelector(state => state.auth);
   const navigate = useNavigate();
+  const { trackConversion } = useVisitorTracking();
 
   // Debug: Log course data
   console.log('CourseCard - Full course object:', course);
@@ -46,6 +48,9 @@ const CourseCard = ({ course, onSelect }) => {
       // Track the click in the backend
       await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/courses/${course._id}/click`);
       console.log('Affiliate click tracked successfully');
+      
+      // Track conversion
+      trackConversion('click');
       
       // Ensure the affiliate link is properly formatted
       let affiliateUrl = course.affiliate_link;

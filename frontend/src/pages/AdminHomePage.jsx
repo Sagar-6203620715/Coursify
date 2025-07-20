@@ -16,13 +16,28 @@ const AdminHomePage = () => {
   const token = localStorage.getItem('userToken');
 
   const fetchRevenueData = async () => {
+    // Check if token exists
+    if (!token) {
+      setError('No authentication token found. Please log in.');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revenue`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRevenueData(response.data);
     } catch (err) {
-      setError(err?.response?.data?.message || 'Failed to fetch revenue data');
+      if (err?.response?.status === 401) {
+        setError('Authentication failed. Please log in again.');
+        // Clear invalid token
+        localStorage.removeItem('userToken');
+      } else if (err?.response?.status === 403) {
+        setError('Access denied. Admin privileges required.');
+      } else {
+        setError(err?.response?.data?.message || 'Failed to fetch revenue data');
+      }
     } finally {
       setLoading(false);
     }
@@ -43,8 +58,36 @@ const AdminHomePage = () => {
   if (error) {
     return (
       <div className="max-w-7xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+          <div className="flex items-center mb-4">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">Error Loading Dashboard</h3>
+            </div>
+          </div>
+          <p className="text-red-600 mb-4">{error}</p>
+          <div className="flex space-x-3">
+            <button
+              onClick={() => {
+                setError('');
+                setLoading(true);
+                fetchRevenueData();
+              }}
+              className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Retry
+            </button>
+            <button
+              onClick={() => window.location.href = '/login'}
+              className="bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            >
+              Go to Login
+            </button>
+          </div>
         </div>
       </div>
     );

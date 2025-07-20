@@ -4,6 +4,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import login from "../assets/login.webp";
 import { loginUser } from '../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import useVisitorTracking from '../hooks/useVisitorTracking';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { loading, error, user } = useSelector(state => state.auth);
+  const { trackConversion } = useVisitorTracking();
   
   // Get message from URL parameters
   const message = searchParams.get('message');
@@ -54,6 +56,7 @@ const Login = () => {
 
     const resultAction = await dispatch(loginUser({ email, password }));
     if (loginUser.fulfilled.match(resultAction)) {
+      trackConversion('signup');
       navigate("/");
     }
   };

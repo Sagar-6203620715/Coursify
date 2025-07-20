@@ -15,6 +15,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const courseAdminRoutes = require("./routes/courseAdminRoutes");
 const domainAdminRoutes = require("./routes/domainAdminRoutes");
 const subscriberRoutes = require("./routes/subscriberRoutes");
+const visitorRoutes = require("./routes/visitorRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 9000;
@@ -102,6 +103,7 @@ app.use("/api/admin/users", adminRoutes);
 app.use("/api/admin/courses", courseAdminRoutes);
 app.use("/api/admin/domains", domainAdminRoutes);
 app.use("/api/subscribers", subscriberRoutes);
+app.use("/api/visitors", visitorRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });

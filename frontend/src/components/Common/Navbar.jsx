@@ -49,7 +49,7 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
       <nav className="bg-white shadow-sm sticky top-0 z-40">
         <div className="container mx-auto flex items-center justify-between py-4 px-4 sm:px-6">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 -ml-3 mr-8">
             <Link to="/" className="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200">
               Coursify
             </Link>
@@ -73,7 +73,7 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-3 sm:space-x-4">
+          <div className="flex items-center -mr-5 space-x-3 sm:space-x-4">
             {/* Admin Link */}
             <Link 
               to="/admin"

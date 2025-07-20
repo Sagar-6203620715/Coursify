@@ -106,9 +106,9 @@ const EditCoursePage = () => {
     console.log('Submitting course data:', submitData);
 
     try {
-      if (isEdit) {
+    if (isEdit) {
         await dispatch(updateCourse({ id, courseData: submitData })).unwrap();
-      } else {
+    } else {
         await dispatch(createCourse(submitData)).unwrap();
       }
       navigate('/admin/courses');

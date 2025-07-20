@@ -4,6 +4,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff, FiUser } from 'react-icons/fi';
 import register from "../assets/register.webp";
 import { registerUser } from '../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import useVisitorTracking from '../hooks/useVisitorTracking';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, user } = useSelector(state => state.auth);
+  const { trackConversion } = useVisitorTracking();
 
   // Redirect if already logged in
   useEffect(() => {
@@ -88,6 +90,7 @@ const Register = () => {
     }));
     
     if (registerUser.fulfilled.match(resultAction)) {
+      trackConversion('signup');
       navigate("/");
     }
   };

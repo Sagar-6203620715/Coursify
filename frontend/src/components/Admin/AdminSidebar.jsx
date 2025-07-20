@@ -1,5 +1,5 @@
 import React from 'react'
-import { FaSignOutAlt, FaUser, FaBook, FaLayerGroup, FaListAlt, FaChartLine, FaHome, FaTimes } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaBook, FaLayerGroup, FaListAlt, FaChartLine, FaHome, FaTimes, FaUsers } from 'react-icons/fa'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -44,6 +44,12 @@ const AdminSidebar = ({ onClose }) => {
       icon: FaLayerGroup, 
       label: 'Domains',
       description: 'Manage course domains'
+    },
+    { 
+      to: '/admin/visitors', 
+      icon: FaUsers, 
+      label: 'Visitors',
+      description: 'Track website visitors'
     }
   ]
 
