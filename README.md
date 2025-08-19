@@ -1,6 +1,6 @@
 # Course Comparator
 
-A modern, responsive web application for comparing and discovering online courses across different domains and platform.
+A modern, responsive web application for comparing and discovering online courses across different domains and platforms.
 
 ## 🚀 Features
 
