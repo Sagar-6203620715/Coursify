@@ -2,7 +2,7 @@
 
 A modern, responsive web application for comparing and discovering online courses across different domains and platforms.
 
-## 🚀 Features
+## 🚀 Feature
 
 ### Core Features
 - **Course Discovery**: Browse courses by domains, sections, and categories
