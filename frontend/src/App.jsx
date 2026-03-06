@@ -23,14 +23,11 @@ import CourseManagement from './components/Admin/CourseManagement';
 import EditCoursePage from './components/Admin/EditCoursePage';
 import SectionManagement from './components/Admin/SectionManagement';
 import DomainManagement from './components/Admin/DomainManagement';
-import VisitorAnalytics from './components/Admin/VisitorAnalytics';
-import VisitorList from './components/Admin/VisitorList';
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import ErrorBoundary from "./components/Common/ErrorBoundary";
 import ProtectedAdminRoute from './components/Admin/ProtectedAdminRoute';
 import NotAuthorized from './pages/NotAuthorized';
-import VisitorTracker from './components/Common/VisitorTracker';
 
 const App = () => {
   const [backendHealthy, setBackendHealthy] = useState(true);
@@ -73,7 +70,6 @@ const App = () => {
     <ErrorBoundary>
       <Provider store={store}>
         <BrowserRouter>
-          <VisitorTracker />
           <Toaster 
             position="top-right"
             toastOptions={{
@@ -119,8 +115,6 @@ const App = () => {
                 <Route path="courses/:id/edit" element={<EditCoursePage />} />
                 <Route path="sections" element={<SectionManagement />} />
                 <Route path="domains" element={<DomainManagement />} />
-                <Route path="visitors" element={<VisitorAnalytics />} />
-                <Route path="visitors/list" element={<VisitorList />} />
               </Route>
             </Route>
           </Routes>
