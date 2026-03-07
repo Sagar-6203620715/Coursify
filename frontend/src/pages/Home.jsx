@@ -1,6 +1,7 @@
 // pages/Home.jsx
 import React, { useEffect, useState } from 'react';
 import Hero from '../components/Layout/Hero';
+import CourseFinder from '../components/AI/CourseFinder';
 import DomainCourses from '../components/Courses/DomainCourses';
 import LoadMore from '../components/Common/LoadMore';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,6 +53,13 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       <Hero />
+
+      <section className="container mx-auto px-4 py-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center">
+          Find Your Perfect Course with AI
+        </h2>
+        <CourseFinder />
+      </section>
       
       {sections.length === 0 ? (
         <div className="container mx-auto px-4 py-12">
