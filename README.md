@@ -67,6 +67,8 @@ npm run seed
 2. Build command: `npm install`
 3. Start command: `npm start`
 4. Add env vars from `backend/.env.example` (use production values)
+5. **Required for AI:** `GEMINI_API_KEY` — copy the same key from your local `.env` into Render → Environment
+6. **Required for CORS:** `FRONTEND_URL=https://course-comparator.netlify.app` (or your Netlify URL)
 
 ### Netlify (frontend)
 

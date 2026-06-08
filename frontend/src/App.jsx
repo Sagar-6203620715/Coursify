@@ -34,24 +34,47 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkBackendHealth = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/health`);
-        const data = await response.json();
-        setBackendHealthy(data.status === "ok");
-      } catch (error) {
-        console.error('Backend health check failed:', error);
+    const checkBackendHealth = async (retries = 3) => {
+      const baseUrl = import.meta.env.VITE_BACKEND_URL?.replace(/\/$/, "");
+      if (!baseUrl) {
         setBackendHealthy(false);
-      } finally {
-        setIsLoading(false);
+        return false;
       }
+
+      for (let attempt = 0; attempt < retries; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 20000);
+          const response = await fetch(`${baseUrl}/health`, { signal: controller.signal });
+          clearTimeout(timeout);
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.status === "ok") {
+              setBackendHealthy(true);
+              return true;
+            }
+          }
+        } catch (error) {
+          console.warn(`Backend health check attempt ${attempt + 1} failed:`, error);
+        }
+        if (attempt < retries - 1) {
+          await new Promise((r) => setTimeout(r, 3000));
+        }
+      }
+
+      setBackendHealthy(false);
+      return false;
     };
 
-    checkBackendHealth();
-    
-    // Check backend health every 30 seconds
-    const interval = setInterval(checkBackendHealth, 30000);
-    
+    const runCheck = async () => {
+      await checkBackendHealth();
+      setIsLoading(false);
+    };
+
+    runCheck();
+
+    const interval = setInterval(() => checkBackendHealth(1), 60000);
     return () => clearInterval(interval);
   }, []);
 

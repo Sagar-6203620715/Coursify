@@ -23,6 +23,10 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 const MONGO_URI = process.env.MONGO_URI;
 
+if (!process.env.GEMINI_API_KEY) {
+  console.warn("GEMINI_API_KEY is not set — AI course recommendations will not work");
+}
+
 // CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {

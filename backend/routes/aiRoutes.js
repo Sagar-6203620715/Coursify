@@ -17,6 +17,7 @@ router.post("/recommend", async (req, res) => {
       .select("name price rating duration affiliate_link domain section")
       .populate("domain", "name")
       .populate("section", "name")
+      .limit(80)
       .lean();
 
     const courses = rawCourses.map((c) => ({
@@ -40,8 +41,11 @@ ${JSON.stringify(courses)}
 User query: "${query}"`;
 
     const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ message: "AI service unavailable" });
+    if (!apiKey || apiKey === "your_gemini_api_key_here") {
+      console.error("GEMINI_API_KEY is missing or not configured on the server");
+      return res.status(503).json({
+        message: "AI service is not configured. Add GEMINI_API_KEY in Render environment variables.",
+      });
     }
 
     const response = await fetch(
