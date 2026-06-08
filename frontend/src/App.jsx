@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import UserLayout from "./components/Layout/UserLayout";
 import Home from "./pages/Home"
@@ -30,65 +30,6 @@ import ProtectedAdminRoute from './components/Admin/ProtectedAdminRoute';
 import NotAuthorized from './pages/NotAuthorized';
 
 const App = () => {
-  const [backendHealthy, setBackendHealthy] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const checkBackendHealth = async (retries = 3) => {
-      const baseUrl = import.meta.env.VITE_BACKEND_URL?.replace(/\/$/, "");
-      if (!baseUrl) {
-        setBackendHealthy(false);
-        return false;
-      }
-
-      for (let attempt = 0; attempt < retries; attempt++) {
-        try {
-          const controller = new AbortController();
-          const timeout = setTimeout(() => controller.abort(), 20000);
-          const response = await fetch(`${baseUrl}/health`, { signal: controller.signal });
-          clearTimeout(timeout);
-
-          if (response.ok) {
-            const data = await response.json();
-            if (data.status === "ok") {
-              setBackendHealthy(true);
-              return true;
-            }
-          }
-        } catch (error) {
-          console.warn(`Backend health check attempt ${attempt + 1} failed:`, error);
-        }
-        if (attempt < retries - 1) {
-          await new Promise((r) => setTimeout(r, 3000));
-        }
-      }
-
-      setBackendHealthy(false);
-      return false;
-    };
-
-    const runCheck = async () => {
-      await checkBackendHealth();
-      setIsLoading(false);
-    };
-
-    runCheck();
-
-    const interval = setInterval(() => checkBackendHealth(1), 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <ErrorBoundary>
       <Provider store={store}>
@@ -103,13 +44,6 @@ const App = () => {
               },
             }}
           />
-          
-          {!backendHealthy && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center text-sm md:text-base">
-              <strong className="font-bold">Warning: </strong>
-              <span className="block sm:inline">Backend API is not reachable or unhealthy. Some features may not work properly.</span>
-            </div>
-          )}
           
           <Routes>
             <Route path="/" element={<UserLayout />}>

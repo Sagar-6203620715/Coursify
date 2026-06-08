@@ -80,7 +80,11 @@ app.use(cors(corsOptions));
 // Handle preflight requests
 app.options('*', cors(corsOptions));
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 app.use(rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 1000,
@@ -111,6 +115,10 @@ app.use("/api/subscribers", subscriberRoutes);
 app.use("/api/ai", aiRoutes);
 
 app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
+app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
