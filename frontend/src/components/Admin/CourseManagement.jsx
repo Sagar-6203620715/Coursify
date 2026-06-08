@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAdminCourses, deleteCourse, clearError } from '../../redux/slices/adminCourseSlice';
+import CourseRow from './CourseRow';
 
 const CourseManagement = () => {
   const dispatch = useDispatch();
@@ -80,16 +81,7 @@ const CourseManagement = () => {
           <tbody>
             {courses.length > 0 ? (
               courses.map((course) => (
-                <tr key={course._id} className="border-b hover:bg-gray-50 cursor-pointer">
-                  <td className="p-4 font-medium text-gray-900 whitespace-nowrap">{course.name}</td>
-                  <td className="p-4">{course.section?.name || course.section || '-'}</td>
-                  <td className="p-4">{course.domain?.name || course.domain || '-'}</td>
-                  <td className="p-4">{course.price}</td>
-                  <td className="p-4">
-                    <Link to={`/admin/courses/${course._id}/edit`} className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600">Edit</Link>
-                    <button onClick={() => handleDelete(course._id)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
-                  </td>
-                </tr>
+                <CourseRow key={course._id} course={course} onDelete={handleDelete}/>
               ))
             ) : (
               <tr>

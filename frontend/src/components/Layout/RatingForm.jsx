@@ -61,6 +61,7 @@ const RatingForm = ({ course, onClose }) => {
 
     setLoading(true);
     setSubmitError('');
+    
 
     try {
       await axios.post(
@@ -75,11 +76,12 @@ const RatingForm = ({ course, onClose }) => {
           },
         }
       );
+     
       
       setSelectedRating(0);
       setReviewText('');
       await fetchReviews();
-      if (onClose) onClose();
+      //if (onClose) onClose();
     } catch (error) {
       setSubmitError(error?.response?.data?.message || 'Failed to submit review');
       console.error("Failed to submit review", error);

@@ -1,5 +1,5 @@
-// AI Course Recommendation — uses Claude API (Anthropic) via RAG-style context injection
-// Flow: User query → Express backend → MongoDB courses → Claude API → ranked results
+// AI Course Recommendation — uses Google Gemini via RAG-style context injection
+// Flow: User query → Express backend → MongoDB courses → Gemini API → ranked results
 import React, { useState } from 'react';
 import axios from 'axios';
 
